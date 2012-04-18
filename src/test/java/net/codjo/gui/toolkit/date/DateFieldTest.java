@@ -4,8 +4,6 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.gui.toolkit.date;
-import net.codjo.test.common.LogString;
-import static net.codjo.test.common.matcher.JUnitMatchers.*;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import net.codjo.test.common.LogString;
 import org.uispec4j.Button;
 import org.uispec4j.Key;
 import org.uispec4j.Panel;
@@ -29,6 +26,9 @@ import org.uispec4j.UISpecTestCase;
 import org.uispec4j.Window;
 import org.uispec4j.interception.WindowHandler;
 import org.uispec4j.interception.WindowInterceptor;
+import static net.codjo.test.common.matcher.JUnitMatchers.equalTo;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 /**
  * Classe de test de <code>DateField</code>.
  *
@@ -180,13 +180,13 @@ public class DateFieldTest extends UISpecTestCase {
         DateField.DateFieldGlobalFocusValidator dateValidator = dateField.new DateFieldGlobalFocusValidator();
         FocusEvent focusEvent = mock(FocusEvent.class);
         when(focusEvent.getOppositeComponent()).thenReturn(dateField.getMonthField());
-        assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(false));
+        net.codjo.test.common.matcher.JUnitMatchers.assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(false));
         when(focusEvent.getOppositeComponent()).thenReturn(dateField.getDayField());
-        assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(false));
+        net.codjo.test.common.matcher.JUnitMatchers.assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(false));
         when(focusEvent.getOppositeComponent()).thenReturn(dateField.getYearField());
-        assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(false));
+        net.codjo.test.common.matcher.JUnitMatchers.assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(false));
         when(focusEvent.getOppositeComponent()).thenReturn(new JTextField());
-        assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(true));
+        net.codjo.test.common.matcher.JUnitMatchers.assertThat(dateValidator.hasGloballyLostFocus(focusEvent), equalTo(true));
     }
 
 
