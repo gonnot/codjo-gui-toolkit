@@ -4,18 +4,21 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.gui.toolkit.number;
-import net.codjo.gui.toolkit.AbstractJFCTestCase;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import junit.extensions.jfcunit.JFCTestHelper;
 import junit.extensions.jfcunit.TestHelper;
 import junit.extensions.jfcunit.eventdata.StringEventData;
+import net.codjo.gui.toolkit.AbstractJFCTestCase;
 /**
  * Classe de test de {@link PercentageField}
  *
@@ -50,8 +53,6 @@ public class PercentageFieldTest extends AbstractJFCTestCase {
 
     /**
      * Test le filtre de saisie sur la valeur max possible.
-     *
-     * @throws Exception
      */
     public void test_gui_badValue() throws Exception {
         getHelper().sendString(new StringEventData(this, field, "100"));
@@ -73,8 +74,6 @@ public class PercentageFieldTest extends AbstractJFCTestCase {
 
     /**
      * Test que l'utilisateur saisie un pourcentage.
-     *
-     * @throws Exception
      */
     public void test_gui_percentage() throws Exception {
         getHelper().sendString(new StringEventData(this, field, "50.54"));
@@ -87,8 +86,6 @@ public class PercentageFieldTest extends AbstractJFCTestCase {
 
     /**
      * Test la modification du champs par programme.
-     *
-     * @throws Exception
      */
     public void test_prg_setNumber() throws Exception {
         //-------- Changement par setNumber --------
@@ -99,14 +96,12 @@ public class PercentageFieldTest extends AbstractJFCTestCase {
 
         setFocus(otherField);
 
-        assertEquals("50,00 %", field.getText());
+        assertEquals(usingLocalDecimalSeparator("50,00 %"), field.getText());
     }
 
 
     /**
      * Test la modification du champs par programme avec nb de digit spécifié.
-     *
-     * @throws Exception
      */
     public void test_prg_setNumber_digit() throws Exception {
         TestHelper.disposeWindow(window, this);
@@ -120,7 +115,7 @@ public class PercentageFieldTest extends AbstractJFCTestCase {
 
         setFocus(otherField);
 
-        assertEquals("50,0000000 %", field.getText());
+        assertEquals(usingLocalDecimalSeparator("50,0000000 %"), field.getText());
     }
 
 
@@ -155,5 +150,11 @@ public class PercentageFieldTest extends AbstractJFCTestCase {
         window.getContentPane().add(field, BorderLayout.CENTER);
         window.pack();
         window.setVisible(true);
+    }
+
+
+    private static String usingLocalDecimalSeparator(String formattedNumber) {
+        DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getInstance(Locale.getDefault());
+        return formattedNumber.replaceAll(",", decimalFormat.getDecimalFormatSymbols().getDecimalSeparator() + "");
     }
 }
